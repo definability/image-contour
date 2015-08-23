@@ -1,7 +1,28 @@
 (function () {
     var line = []
-    var ctx;
+    var ctx
+    var circleR = 50
+    function distance (point1, point2) {
+        var x = point1.x - point2.x
+        var y = point1.y - point2.y
+        return Math.sqrt(x*x + y*y)
+    }
+    function findPoint (x, y) {
+        var epsilon = circleR
+        for (var i = line.length-1; i >= 0; i--) {
+            if (distance({x: x, y: y}, line[i]) < epsilon) {
+                return i
+            }
+        }
+        return -1
+    }
     function drawLine (x, y) {
+        var pointIndex = findPoint (x, y)
+        var needArc = pointIndex == -1
+        if (pointIndex > -1) {
+            x = line[pointIndex].x
+            y = line[pointIndex].y
+        }
         ctx.beginPath()
         if (!line.length) {
             ctx.moveTo(x, y)
@@ -10,11 +31,13 @@
             ctx.lineTo(x, y)
             ctx.stroke()
         }
-        ctx.beginPath()
-        ctx.arc(x, y, 3, 0, 2*Math.PI)
-        ctx.stroke()
-        ctx.fillStyle='#CCCCCC'
-        ctx.fill()
+        if (needArc) {
+            ctx.beginPath()
+            ctx.arc(x, y, circleR, 0, 2*Math.PI)
+            ctx.stroke()
+            ctx.fillStyle='#CCCCCC'
+            ctx.fill()
+        }
         line.push({x: x, y: y})
     }
     window.onload = function () {
