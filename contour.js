@@ -11,10 +11,10 @@
             ctx.stroke()
         }
         ctx.beginPath()
-            ctx.arc(x, y, 3, 0, 2*Math.PI)
-            ctx.stroke()
-            ctx.fillStyle='#CCCCCC'
-            ctx.fill()
+        ctx.arc(x, y, 3, 0, 2*Math.PI)
+        ctx.stroke()
+        ctx.fillStyle='#CCCCCC'
+        ctx.fill()
         line.push({x: x, y: y})
     }
     window.onload = function () {
