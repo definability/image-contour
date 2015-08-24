@@ -13,7 +13,6 @@ function PointsDrawer (canvasId, circleR) {
 PointsDrawer.prototype.renderObject = function (point) {
     this.context.beginPath()
     this.context.arc(point.x, point.y, this.circleR, 0, 2*Math.PI)
-    this.context.stroke()
     this.context.fill()
 }
 

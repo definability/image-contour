@@ -1,45 +1,42 @@
 (function () {
     var canvases = {}
     var contexts = {}
-    var points = {}
-    var lastPoint = null
-    var circleR = 10
+    var square = [
+        new Point(100, 100),
+        new Point(200, 100),
+        new Point(200, 200),
+        new Point(100, 200)
+    ]
+    var innerTriangle = [
+        new Point(120, 120),
+        new Point(120, 150),
+        new Point(150, 150)
+    ]
+    var triangle = [
+        new Point(300, 300),
+        new Point(300, 400),
+        new Point(400, 400)
+    ]
+    var figures = [square, triangle, innerTriangle]
+    function closedFigureLines (points) {
+        var result = []
+        for (var i=0; i<points.length; i++) {
+            result.push({from: points[i], to: points[(i+1)%points.length]})
+        }
+        return result
+    }
+    var lines = merge(figures.map(closedFigureLines))
+    var points = merge(figures)
+    var circleR = 5
     var pointsDrawer = null
     var linesDrawer = null
-    function findPoint (x, y) {
-        var epsilon = circleR
-        var point = null
-        for (var i in points) {
-            if (points[i].distance(x, y) < epsilon) {
-                return i
-            }
-        }
-        return ''
-    }
-    function drawLine (x, y) {
-        var point = findPoint(x, y)
-        if (!point) {
-            point = new Point(x, y)
-            points[point.toString()] = point
-            pointsDrawer.addObjects([point])
-            pointsDrawer.render()
-        } else {
-            point = points[point]
-        }
-        if (lastPoint) {
-            linesDrawer.addObjects([{from: lastPoint, to: point}])
-            linesDrawer.render()
-        }
-        lastPoint = point
-    }
     window.onload = function () {
         ['main', 'lines', 'points', 'upper'].forEach(function(item) {
             canvases[item] = document.getElementById(['canvas', item].join('-'))
             contexts[item] = canvases[item].getContext('2d')
         })
 
-
-        pointsDrawer = new PointsDrawer('canvas-points', 10)
+        pointsDrawer = new PointsDrawer('canvas-points', circleR)
         linesDrawer = new LinesDrawer('canvas-lines')
 
         var img = new Image()
@@ -47,9 +44,11 @@
         img.onload = function () {
             contexts.main.drawImage(img, 0, 0)
         }
-        canvases.upper.onclick = function (e) {
-            drawLine(e.layerX, e.layerY)
-        }
+        pointsDrawer.addObjects(points)
+        linesDrawer.addObjects(lines)
+
+        linesDrawer.render()
+        pointsDrawer.render()
     }
 })()
 
