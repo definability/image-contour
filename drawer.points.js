@@ -1,4 +1,5 @@
 var PointsDrawer = extend(Drawer, PointsDrawer)
+
 function PointsDrawer (canvasId, circleR) {
     PointsDrawer.__super__.constructor.apply(this, arguments)
     for (var i in this) {
