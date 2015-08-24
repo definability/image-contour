@@ -2,7 +2,7 @@ var Polygon = function () {
     if (arguments[0].length) {
         this.points = arguments[0]
     } else {
-        this.points = arguments
+        this.points = Array.prototype.slice.call(arguments)
     }
     this.generateLines(this.points)
 }
