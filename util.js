@@ -1,12 +1,16 @@
+function bindAll (obj) {
+    for (var i in obj) {
+        if (obj[i].bind) {
+            obj[i] = obj[i].bind(obj)
+        }
+    }
+}
+
 function extend (parent, child) {
     if (child === undefined) {
         child = function () {
             parent.prototype.constructor.apply(this, arguments)
-            for (var i in this) {
-                if (this[i].bind) {
-                    this[i] = this[i].bind(this)
-                }
-            }
+            bindAll(this)
         }
     }
 
@@ -24,4 +28,3 @@ function extend (parent, child) {
 
     return child;
 }
-
