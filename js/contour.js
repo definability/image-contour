@@ -46,6 +46,12 @@
 
         linesDrawer.render()
         pointsDrawer.render()
+
+        setTimeout(function() {
+            square.points[1].x = 500
+            linesDrawer.render(true)
+            pointsDrawer.render()
+        }, 1000)
     }
 })()
 
