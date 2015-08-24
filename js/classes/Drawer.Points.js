@@ -12,6 +12,7 @@ function PointsDrawer (canvasId, circleR) {
 
 PointsDrawer.prototype.renderObject = function (point) {
     this.context.beginPath()
+    this.context.fillStyle=point.highlight? '#8888FF':'#CCCCCC'
     this.context.arc(point.x, point.y, this.circleR, 0, 2*Math.PI)
     this.context.fill()
 }

@@ -6,6 +6,7 @@ var Point = function (x, y) {
     } else {
         this.fromXY(x, y)
     }
+    this.highlight = false
 }
 
 Point.prototype.fromXY = function (x, y) {
