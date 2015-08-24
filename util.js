@@ -28,3 +28,11 @@ function extend (parent, child) {
 
     return child;
 }
+
+function merge () {
+    if (arguments.length === 1 && arguments[0].length) {
+        return [].concat.apply([], arguments[0])
+    }
+    return [].concat.apply([], arguments)
+}
+
