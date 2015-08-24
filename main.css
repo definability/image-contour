@@ -1,0 +1,19 @@
+canvas {
+    position: absolute;
+}
+
+#canvas-main {
+    z-index: 1;
+}
+
+#canvas-lines {
+    z-index: 2;
+}
+
+#canvas-points {
+    z-index: 3;
+}
+
+#canvas-upper {
+    z-index: 1000;
+}

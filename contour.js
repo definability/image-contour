@@ -1,7 +1,8 @@
 (function () {
+    var canvases = {}
+    var contexts = {}
     var points = {}
     var lastPoint = null
-    var ctx = null
     var circleR = 10
     function findPoint (x, y) {
         var epsilon = circleR
@@ -16,39 +17,44 @@
     function drawLine (x, y) {
         var point = findPoint(x, y)
         if (!point) {
-            ctx.beginPath()
-            ctx.arc(x, y, circleR, 0, 2*Math.PI)
-            ctx.stroke()
-            ctx.fillStyle='#CCCCCC'
-            ctx.fill()
+            contexts.points.beginPath()
+            contexts.points.arc(x, y, circleR, 0, 2*Math.PI)
+            contexts.points.stroke()
+            contexts.points.fill()
 
             point = new Point(x, y)
             points[point.toString()] = point
         } else {
             point = points[point]
         }
-        ctx.beginPath()
         if (!lastPoint) {
-            ctx.moveTo(point.x, point.y)
+            contexts.lines.beginPath()
+            contexts.lines.moveTo(point.x, point.y)
         } else {
-            ctx.moveTo(lastPoint.x, lastPoint.y)
-            ctx.lineTo(point.x, point.y)
-            ctx.stroke()
+            contexts.lines.lineTo(point.x, point.y)
+            contexts.lines.stroke()
         }
         lastPoint = point
     }
     window.onload = function () {
-        var canvas = document.getElementById('canvas-main')
-        ctx = document.getElementById('canvas-main').getContext('2d')
-        ctx.strokeStyle='white'
-        ctx.lineWidth='1'
+        ['main', 'lines', 'points', 'upper'].forEach(function(item) {
+            canvases[item] = document.getElementById(['canvas', item].join('-'))
+            contexts[item] = canvases[item].getContext('2d')
+        })
+
+        contexts.lines.strokeStyle='white'
+        contexts.lines.lineWidth='1'
+
+        contexts.points.strokeStyle='white'
+        contexts.points.lineWidth='1'
+        contexts.points.fillStyle='#CCCCCC'
 
         var img = new Image()
         img.src = 'pluto.jpg'
         img.onload = function () {
-            ctx.drawImage(img, 0, 0)
+            contexts.main.drawImage(img, 0, 0)
         }
-        canvas.onclick = function (e) {
+        canvases.upper.onclick = function (e) {
             drawLine(e.layerX, e.layerY)
         }
     }
