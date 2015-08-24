@@ -1,0 +1,16 @@
+extend = function (child, parent) {
+    Object.keys(parent).filter(parent.hasOwnProperty).map(function (key) {
+        child[key] = parent[key]
+    })
+
+    function ctor() {
+        this.constructor = child;
+    }
+    ctor.prototype = parent.prototype;
+
+    child.prototype = new ctor();
+    child.__super__ = parent.prototype;
+
+    return child;
+}
+
