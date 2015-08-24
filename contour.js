@@ -1,44 +1,43 @@
 (function () {
-    var line = []
-    var ctx
-    var circleR = 50
-    function distance (point1, point2) {
-        var x = point1.x - point2.x
-        var y = point1.y - point2.y
-        return Math.sqrt(x*x + y*y)
-    }
+    var points = new Set()
+    var lastPoint = null
+    var ctx = null
+    var circleR = 10
     function findPoint (x, y) {
         var epsilon = circleR
-        for (var i = line.length-1; i >= 0; i--) {
-            if (distance({x: x, y: y}, line[i]) < epsilon) {
-                return i
+        var point = null
+        var iterator = points.values()
+        while (point = iterator.next().value) {
+            point = new Point(point)
+            if (point.distance(x, y) < epsilon) {
+                return point
             }
         }
-        return -1
+        return null
     }
     function drawLine (x, y) {
-        var pointIndex = findPoint (x, y)
-        var needArc = pointIndex == -1
-        if (pointIndex > -1) {
-            x = line[pointIndex].x
-            y = line[pointIndex].y
+        var point = findPoint(x, y)
+        var needArc = !point
+        if (!point) {
+            point = new Point(x, y)
+            points.add(point.toString())
         }
         ctx.beginPath()
-        if (!line.length) {
-            ctx.moveTo(x, y)
+        if (!lastPoint) {
+            ctx.moveTo(point.x, point.y)
         } else {
-            ctx.moveTo(line[line.length-1].x, line[line.length-1].y)
-            ctx.lineTo(x, y)
+            ctx.moveTo(lastPoint.x, lastPoint.y)
+            ctx.lineTo(point.x, point.y)
             ctx.stroke()
         }
         if (needArc) {
             ctx.beginPath()
-            ctx.arc(x, y, circleR, 0, 2*Math.PI)
+            ctx.arc(point.x, point.y, circleR, 0, 2*Math.PI)
             ctx.stroke()
             ctx.fillStyle='#CCCCCC'
             ctx.fill()
         }
-        line.push({x: x, y: y})
+        lastPoint = point
     }
     window.onload = function () {
         var canvas = document.getElementById('canvas-main')
