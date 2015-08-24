@@ -5,6 +5,7 @@
     var lastPoint = null
     var circleR = 10
     var pointsDrawer = null
+    var linesDrawer = null
     function findPoint (x, y) {
         var epsilon = circleR
         var point = null
@@ -21,16 +22,13 @@
             point = new Point(x, y)
             points[point.toString()] = point
             pointsDrawer.addObjects([point])
-            pointsDrawer.render.call(pointsDrawer)
+            pointsDrawer.render()
         } else {
             point = points[point]
         }
-        if (!lastPoint) {
-            contexts.lines.beginPath()
-            contexts.lines.moveTo(point.x, point.y)
-        } else {
-            contexts.lines.lineTo(point.x, point.y)
-            contexts.lines.stroke()
+        if (lastPoint) {
+            linesDrawer.addObjects([{from: lastPoint, to: point}])
+            linesDrawer.render()
         }
         lastPoint = point
     }
@@ -40,10 +38,9 @@
             contexts[item] = canvases[item].getContext('2d')
         })
 
-        contexts.lines.strokeStyle='white'
-        contexts.lines.lineWidth='1'
 
         pointsDrawer = new PointsDrawer('canvas-points', 10)
+        linesDrawer = new LinesDrawer('canvas-lines')
 
         var img = new Image()
         img.src = 'pluto.jpg'
