@@ -19,5 +19,6 @@ Drawer.prototype.renderObject = function (obj) {
 
 Drawer.prototype.render = function () {
     this.objects.map(this.renderObject)
+    this.context.stroke()
 }
 
