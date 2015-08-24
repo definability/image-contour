@@ -25,6 +25,7 @@
         return item.getPoints()
     }))
     var circleR = 5
+    var chosenPoint = null
     var pointsDrawer = null
     var linesDrawer = null
     window.onload = function () {
@@ -47,11 +48,38 @@
         linesDrawer.render()
         pointsDrawer.render()
 
-        setTimeout(function() {
-            square.points[1].x = 500
-            linesDrawer.render(true)
-            pointsDrawer.render()
-        }, 1000)
+        canvases.upper.onclick = function (e) {
+            if (!chosenPoint) {
+                for (var i=points.length-1; i>-1; i--) {
+                    if (points[i].distance(e.layerX, e.layerY) > circleR) {
+                        continue
+                    }
+                    chosenPoint = points[i]
+                    break
+                }
+                if (chosenPoint) {
+                    chosenPoint.highlight = true
+                    lines.filter(function (line) {
+                        return line.from === chosenPoint || line.to === chosenPoint
+                    }).map(function (line) {
+                        line.highlight = true
+                    })
+                    pointsDrawer.render()
+                    linesDrawer.render()
+                }
+            } else {
+                chosenPoint.x = e.layerX
+                chosenPoint.y = e.layerY
+                chosenPoint.highlight = false
+                lines.map(function (line) {
+                    line.highlight = false
+                })
+
+                chosenPoint = null
+                linesDrawer.render()
+                pointsDrawer.render()
+            }
+        }
     }
 })()
 
