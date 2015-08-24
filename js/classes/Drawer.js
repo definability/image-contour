@@ -18,8 +18,6 @@ Drawer.prototype.renderObject = function (obj) {
 
 Drawer.prototype.render = function (flag) {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
-    this.context.beginPath()
     this.objects.map(this.renderObject)
-    this.context.stroke()
 }
 
