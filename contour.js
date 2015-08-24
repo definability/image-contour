@@ -1,32 +1,29 @@
 (function () {
     var canvases = {}
     var contexts = {}
-    var square = [
+    var square = new Polygon(
         new Point(100, 100),
         new Point(200, 100),
         new Point(200, 200),
         new Point(100, 200)
-    ]
-    var innerTriangle = [
+    )
+    var innerTriangle = new Polygon(
         new Point(120, 120),
         new Point(120, 150),
         new Point(150, 150)
-    ]
-    var triangle = [
+    )
+    var triangle = new Polygon(
         new Point(300, 300),
         new Point(300, 400),
         new Point(400, 400)
-    ]
+    )
     var figures = [square, triangle, innerTriangle]
-    function closedFigureLines (points) {
-        var result = []
-        for (var i=0; i<points.length; i++) {
-            result.push({from: points[i], to: points[(i+1)%points.length]})
-        }
-        return result
-    }
-    var lines = merge(figures.map(closedFigureLines))
-    var points = merge(figures)
+    var lines = merge(figures.map(function (item) {
+        return item.getLines()
+    }))
+    var points = merge(figures.map(function (item) {
+        return item.getPoints()
+    }))
     var circleR = 5
     var pointsDrawer = null
     var linesDrawer = null
