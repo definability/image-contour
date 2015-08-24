@@ -1,26 +1,31 @@
 (function () {
-    var points = new Set()
+    var points = {}
     var lastPoint = null
     var ctx = null
     var circleR = 10
     function findPoint (x, y) {
         var epsilon = circleR
         var point = null
-        var iterator = points.values()
-        while (point = iterator.next().value) {
-            point = new Point(point)
-            if (point.distance(x, y) < epsilon) {
-                return point
+        for (var i in points) {
+            if (points[i].distance(x, y) < epsilon) {
+                return i
             }
         }
-        return null
+        return ''
     }
     function drawLine (x, y) {
         var point = findPoint(x, y)
-        var needArc = !point
         if (!point) {
+            ctx.beginPath()
+            ctx.arc(x, y, circleR, 0, 2*Math.PI)
+            ctx.stroke()
+            ctx.fillStyle='#CCCCCC'
+            ctx.fill()
+
             point = new Point(x, y)
-            points.add(point.toString())
+            points[point.toString()] = point
+        } else {
+            point = points[point]
         }
         ctx.beginPath()
         if (!lastPoint) {
@@ -29,13 +34,6 @@
             ctx.moveTo(lastPoint.x, lastPoint.y)
             ctx.lineTo(point.x, point.y)
             ctx.stroke()
-        }
-        if (needArc) {
-            ctx.beginPath()
-            ctx.arc(point.x, point.y, circleR, 0, 2*Math.PI)
-            ctx.stroke()
-            ctx.fillStyle='#CCCCCC'
-            ctx.fill()
         }
         lastPoint = point
     }
