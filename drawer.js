@@ -1,6 +1,7 @@
 var Drawer = function (canvasId) {
     this.canvas = document.getElementById(canvasId)
     this.context = this.canvas.getContext('2d')
+    this.context.beginPath()
     this.objects = []
     this.setup()
 }
