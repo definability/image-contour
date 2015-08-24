@@ -4,6 +4,7 @@
     var points = {}
     var lastPoint = null
     var circleR = 10
+    var pointsDrawer = null
     function findPoint (x, y) {
         var epsilon = circleR
         var point = null
@@ -17,13 +18,10 @@
     function drawLine (x, y) {
         var point = findPoint(x, y)
         if (!point) {
-            contexts.points.beginPath()
-            contexts.points.arc(x, y, circleR, 0, 2*Math.PI)
-            contexts.points.stroke()
-            contexts.points.fill()
-
             point = new Point(x, y)
             points[point.toString()] = point
+            pointsDrawer.addObjects([point])
+            pointsDrawer.render.call(pointsDrawer)
         } else {
             point = points[point]
         }
@@ -45,9 +43,7 @@
         contexts.lines.strokeStyle='white'
         contexts.lines.lineWidth='1'
 
-        contexts.points.strokeStyle='white'
-        contexts.points.lineWidth='1'
-        contexts.points.fillStyle='#CCCCCC'
+        pointsDrawer = new PointsDrawer('canvas-points', 10)
 
         var img = new Image()
         img.src = 'pluto.jpg'
@@ -59,3 +55,4 @@
         }
     }
 })()
+
