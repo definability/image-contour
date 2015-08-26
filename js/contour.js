@@ -1,25 +1,25 @@
 (function () {
     var canvases = {}
     var contexts = {}
-    var square = new Polygon(
+    var square = new Polygon([
         new Point(100, 100),
         new Point(200, 100),
         new Point(200, 200),
         new Point(100, 200)
-    )
-    var innerTriangle = new Polygon(
+    ])
+    var innerTriangle = new Polygon([
         new Point(120, 120),
         new Point(120, 150),
         new Point(150, 150)
-    )
-    var triangle = new Polygon(
+    ])
+    var triangle = new Polygon([
         new Point(300, 300),
         new Point(300, 400),
         new Point(400, 400)
-    )
+    ])
     var figures = [square, triangle, innerTriangle]
-    var lines = merge(figures.map(function (item) {
-        return item.getLines()
+    var links = merge(figures.map(function (item) {
+        return item.getLinks()
     }))
     var points = merge(figures.map(function (item) {
         return item.getPoints()
@@ -43,7 +43,7 @@
             contexts.main.drawImage(img, 0, 0)
         }
         pointsDrawer.addObjects(points)
-        linesDrawer.addObjects(lines)
+        linesDrawer.addObjects(links)
 
         linesDrawer.render()
         pointsDrawer.render()
@@ -59,10 +59,8 @@
                 }
                 if (chosenPoint) {
                     chosenPoint.highlight = true
-                    lines.filter(function (line) {
-                        return line.from === chosenPoint || line.to === chosenPoint
-                    }).map(function (line) {
-                        line.highlight = true
+                    chosenPoint.getLinks().forEach(function (link) {
+                        link.highlight = true
                     })
                     pointsDrawer.render()
                     linesDrawer.render()
@@ -71,10 +69,9 @@
                 chosenPoint.x = e.layerX
                 chosenPoint.y = e.layerY
                 chosenPoint.highlight = false
-                lines.map(function (line) {
-                    line.highlight = false
+                chosenPoint.getLinks().forEach(function (link) {
+                    link.highlight = false
                 })
-
                 chosenPoint = null
                 linesDrawer.render()
                 pointsDrawer.render()

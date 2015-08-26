@@ -1,10 +1,14 @@
 var LinesDrawer = extend(Drawer)
 
-LinesDrawer.prototype.renderObject = function (line) {
+LinesDrawer.prototype.renderObject = function (link) {
+    var pointsIterator = link.getPointsIterator()
+    var currentPoint = null
     this.context.beginPath()
-    this.context.moveTo(line.from.x, line.from.y)
-    this.context.strokeStyle=line.highlight? '#AAAAFF':'#CCCCCC'
-    this.context.lineTo(line.to.x, line.to.y)
+    currentPoint = pointsIterator.next().value
+    this.context.moveTo(currentPoint.x, currentPoint.y)
+    this.context.strokeStyle=link.highlight? '#AAAAFF':'#CCCCCC'
+    currentPoint = pointsIterator.next().value
+    this.context.lineTo(currentPoint.x, currentPoint.y)
     this.context.stroke()
 }
 

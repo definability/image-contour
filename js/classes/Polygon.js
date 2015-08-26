@@ -1,23 +1,23 @@
-var Polygon = function () {
-    if (arguments[0].length) {
-        this.points = arguments[0]
-    } else {
-        this.points = Array.prototype.slice.call(arguments)
-    }
-    this.generateLines(this.points)
+var Polygon = function (points) {
+    this.generateLinks(points)
+    this.points = points
 }
 
 Polygon.prototype.getPoints = function () {
     return this.points
 }
 
-Polygon.prototype.getLines = function () {
-    return this.lines
+Polygon.prototype.getLinks = function () {
+    return this.links
 }
 
-Polygon.prototype.generateLines = function (points) {
-    this.lines = []
+Polygon.prototype.generateLinks = function (points) {
+    this.links = []
+    var tmpLink = null
     for (var i=0; i<points.length; i++) {
-        this.lines.push({from: points[i], to: points[(i+1)%points.length]})
+        tmpLink = new Link(points[i], points[(i+1)%points.length])
+        points[i].addLink(tmpLink)
+        points[(i+1)%points.length].addLink(tmpLink)
+        this.links.push(tmpLink)
     }
 }
