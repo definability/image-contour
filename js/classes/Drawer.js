@@ -21,3 +21,10 @@ Drawer.prototype.render = function (flag) {
     this.objects.map(this.renderObject)
 }
 
+Drawer.prototype.moveToPoint = function (point) {
+    return this.context.moveTo(point.x, point.y)
+}
+
+Drawer.prototype.lineToPoint = function (point) {
+    return this.context.lineTo(point.x, point.y)
+}
