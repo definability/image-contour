@@ -7,6 +7,7 @@ var Point = function (x, y) {
         this.fromXY(x, y)
     }
     this.highlight = false
+    this.links = new Set()
 }
 
 Point.prototype.fromXY = function (x, y) {
@@ -41,6 +42,14 @@ Point.prototype.distance = function (x, y) {
     X = this.x - x
     Y = this.y - y
     return Math.sqrt(X*X + Y*Y)
+}
+
+Point.prototype.addLink = function (link) {
+    this.links.add(link)
+}
+
+Point.prototype.getLinks = function () {
+    return this.links
 }
 
 Point.toString = function (x, y) {
